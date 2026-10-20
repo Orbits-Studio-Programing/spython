@@ -1,0 +1,36 @@
+{
+  "Function": {
+    "prefix": "fn",
+    "body": [
+      "fn ${1:name}(${2:parameters}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Declare a function"
+  },
+  "If statement": {
+    "prefix": "if",
+    "body": [
+      "if (${1:condition}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Create an if block"
+  },
+  "While loop": {
+    "prefix": "while",
+    "body": [
+      "while (${1:condition}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Create a while loop"
+  },
+  "Print value": {
+    "prefix": "print",
+    "body": [
+      "print(${1:value});$0"
+    ],
+    "description": "Print a value"
+  }
+}

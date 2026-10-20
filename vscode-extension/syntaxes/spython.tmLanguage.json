@@ -1,0 +1,101 @@
+{
+  "scopeName": "source.sp",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#single-quoted-strings"
+    },
+    {
+      "include": "#functions"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#constants"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#builtins"
+    },
+    {
+      "include": "#operators"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.sp",
+          "begin": "//",
+          "end": "$"
+        },
+        {
+          "name": "comment.line.number-sign.sp",
+          "begin": "#",
+          "end": "$"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.sp",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.sp",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "single-quoted-strings": {
+      "name": "string.quoted.single.sp",
+      "begin": "'",
+      "end": "'",
+      "patterns": [
+        {
+          "name": "constant.character.escape.sp",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "numbers": {
+      "name": "constant.numeric.sp",
+      "match": "\\b\\d+(?:\\.\\d+)?\\b"
+    },
+    "constants": {
+      "name": "constant.language.sp",
+      "match": "\\b(?:true|false|null)\\b"
+    },
+    "keywords": {
+      "name": "keyword.control.sp",
+      "match": "\\b(?:let|fn|return|if|else|while|and|or|not)\\b"
+    },
+    "functions": {
+      "match": "\\b(fn)\\s+([A-Za-z_][A-Za-z_0-9]*)",
+      "captures": {
+        "1": {
+          "name": "keyword.control.sp"
+        },
+        "2": {
+          "name": "entity.name.function.sp"
+        }
+      }
+    },
+    "builtins": {
+      "name": "support.function.sp",
+      "match": "\\bprint\\b"
+    },
+    "operators": {
+      "name": "keyword.operator.sp",
+      "match": "==|!=|<=|>=|&&|\\|\\||[+*/%<>=!-]"
+    }
+  }
+}

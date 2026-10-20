@@ -1,0 +1,72 @@
+{
+  "name": "spython-language-support",
+  "displayName": "spython Language Support",
+  "description": "Syntax highlighting, snippets, and a runner for the spython language.",
+  "version": "0.0.1",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:spython",
+    "onCommand:spython.runFile"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "spython",
+        "aliases": [
+          "spython",
+          "Spython"
+        ],
+        "extensions": [
+          ".spy"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "spython",
+        "scopeName": "source.sp",
+        "path": "./syntaxes/spython.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "spython",
+        "path": "./snippets/spython.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "spython.runFile",
+        "title": "Run Spython File"
+      }
+    ],
+    "configuration": {
+      "title": "spython",
+      "properties": {
+        "spython.pythonCommand": {
+          "type": "string",
+          "default": "python3",
+          "description": "Python executable used to run spython.py."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.3"
+  }
+}
