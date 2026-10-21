@@ -140,7 +140,7 @@ class Block:
 class If:
     condition: object
     then_branch: Block
-    else_branch: Block | None
+    else_branch: Block | "If" | None
 
 
 @dataclass
@@ -199,11 +199,8 @@ class Parser:
             value = self.expression()
             self.consume_text(";", "Expected ';' after declaration")
             return Let(name.text, value)
-        if self.match_text("if"):
-            condition = self.condition()
-            then_branch = self.block()
-            else_branch = self.block() if self.match_text("else") else None
-            return If(condition, then_branch, else_branch)
+        if self.check_text("if"):
+            return self.if_statement()
         if self.match_text("while"):
             condition = self.condition()
             return While(condition, self.block())
@@ -216,6 +213,18 @@ class Parser:
         expression = self.expression()
         self.consume_text(";", "Expected ';' after expression")
         return ExpressionStatement(expression)
+
+    def if_statement(self) -> If:
+        self.consume_text("if", "Expected 'if'")
+        condition = self.condition()
+        then_branch = self.block()
+        else_branch = None
+        if self.match_text("else"):
+            if self.check_text("if"):
+                else_branch = self.if_statement()
+            else:
+                else_branch = self.block()
+        return If(condition, then_branch, else_branch)
 
     def condition(self) -> object:
         if self.match_text("("):
@@ -518,8 +527,12 @@ class Interpreter:
         operator = expression.operator
         try:
             if operator == "+":
-                if type(left) is type(right) and isinstance(left, (int, float, str)):
+                if isinstance(left, str) and isinstance(right, str):
                     return left + right
+                if isinstance(left, (int, float)) and isinstance(right, (int, float)):
+                    return self._number(left, "'+' requires numbers") + self._number(
+                        right, "'+' requires numbers"
+                    )
                 raise SpythonRuntimeError("'+' requires two numbers or two strings")
             if operator == "-":
                 return self._number(left, "'-' requires numbers") - self._number(
@@ -538,11 +551,21 @@ class Interpreter:
                     right, "'%' requires numbers"
                 )
             if operator in {"<", "<=", ">", ">="}:
-                if type(left) is not type(right) or not isinstance(
-                    left, (int, float, str)
-                ):
-                    raise SpythonRuntimeError("Comparison requires matching numbers or strings")
-                return {"<": left < right, "<=": left <= right, ">": left > right, ">=": left >= right}[operator]
+                if isinstance(left, (int, float)) and isinstance(right, (int, float)):
+                    return {
+                        "<": left < right,
+                        "<=": left <= right,
+                        ">": left > right,
+                        ">=": left >= right,
+                    }[operator]
+                if isinstance(left, str) and isinstance(right, str):
+                    return {
+                        "<": left < right,
+                        "<=": left <= right,
+                        ">": left > right,
+                        ">=": left >= right,
+                    }[operator]
+                raise SpythonRuntimeError("Comparison requires matching numbers or strings")
             if operator == "==":
                 return left == right
             if operator == "!=":
@@ -606,7 +629,7 @@ class Interpreter:
 
     @staticmethod
     def _truthy(value: object) -> bool:
-        return value is not None and value is not False
+        return bool(value)
 
     @staticmethod
     def _stringify(value: object) -> str:

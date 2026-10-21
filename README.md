@@ -29,6 +29,8 @@ while (count < 3) {
 
 if (count == 3) {
 	print("done");
+} else if (count < 3) {
+	print("not done yet");
 }
 
 let values = [10, 20, 30];

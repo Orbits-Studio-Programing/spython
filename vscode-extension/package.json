@@ -3,7 +3,13 @@
   "displayName": "spython Language Support",
   "description": "Syntax highlighting, snippets, and a runner for the spython language.",
   "version": "0.0.1",
-  "publisher": "local",
+  "publisher": "spython",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Orbits-Studio-Programing/spython"
+  },
+  "homepage": "https://github.com/Orbits-Studio-Programing/spython",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.85.0"
   },

@@ -17,6 +17,15 @@
     ],
     "description": "Create an if block"
   },
+  "Else if statement": {
+    "prefix": "elif",
+    "body": [
+      "else if (${1:condition}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Create an else-if block"
+  },
   "While loop": {
     "prefix": "while",
     "body": [

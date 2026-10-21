@@ -45,6 +45,29 @@ class SpythonTests(unittest.TestCase):
             self.execute(source), ["[10, [25, 30], true]", "true", "y"]
         )
 
+    def test_truthiness_and_numeric_helpers(self) -> None:
+        source = """
+        let value = 0;
+        if (value) { print("no"); } else { print("zero"); }
+        print(1 + 2.5);
+        print(1 < 2.5);
+        print(0 or 5);
+        """
+        self.assertEqual(self.execute(source), ["zero", "3.5", "true", "5"])
+
+    def test_else_if_chains(self) -> None:
+        source = """
+        let value = 2;
+        if (value == 1) {
+            print("one");
+        } else if (value == 2) {
+            print("two");
+        } else {
+            print("other");
+        }
+        """
+        self.assertEqual(self.execute(source), ["two"])
+
     def test_syntax_and_runtime_errors(self) -> None:
         with self.assertRaises(SpythonSyntaxError):
             run("let x = ;")
